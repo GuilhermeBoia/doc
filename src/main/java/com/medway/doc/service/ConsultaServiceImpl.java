@@ -38,7 +38,7 @@ public class ConsultaServiceImpl implements ConsultaService {
     public List<Consulta> buscarConsultaPorAlunoRE(String re_aluno) {
         Optional<Aluno> aluno = alunoRepository.findById(re_aluno);
         if (aluno.isPresent()) {
-            return consultaRepository.filterConsultasByAluno(aluno.get());
+            return consultaRepository.findByAluno(aluno.get());
         }
         return null;
     }
@@ -47,7 +47,7 @@ public class ConsultaServiceImpl implements ConsultaService {
     public List<Consulta> buscarConsultaPorTerapeutaId(Long id_terapeuta) {
         Optional<Terapeuta> terapeuta = terapeutaRepository.findById(id_terapeuta);
         if (terapeuta.isPresent()) {
-            return consultaRepository.filterConsultasByTerapeuta(terapeuta.get());
+            return consultaRepository.findByTerapeuta(terapeuta.get());
         }
         return null;
     }
@@ -56,7 +56,7 @@ public class ConsultaServiceImpl implements ConsultaService {
     public List<Consulta> buscarConsultasDoDiaTerapeuta(Long id_terapeuta, LocalDate data) {
         Optional<Terapeuta> terapeuta = terapeutaRepository.findById(id_terapeuta);
         if (terapeuta.isPresent() && data.equals(LocalDate.now())) {
-            return consultaRepository.filterConsultasByTerapeutaAndDate(terapeuta.get(), data);
+            return consultaRepository.findByTerapeutaAndDataDaConsulta(terapeuta.get(), data);
         }
         return null;
     }

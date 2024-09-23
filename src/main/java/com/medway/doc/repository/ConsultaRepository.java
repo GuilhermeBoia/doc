@@ -11,8 +11,8 @@ import java.time.LocalDate;
 
 public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
     
-    List<Consulta> filterConsultasByAluno(Aluno aluno);
-    List<Consulta> filterConsultasByTerapeuta(Terapeuta terapeuta);
-    List<Consulta> filterConsultasByTerapeutaAndDate(Terapeuta terapeuta, LocalDate data);
+    List<Consulta> findByAluno(Aluno aluno);
+    List<Consulta> findByTerapeuta(Terapeuta terapeuta);
+    List<Consulta> findByTerapeutaAndDataDaConsulta(Terapeuta terapeuta, LocalDate data);
 
 }
