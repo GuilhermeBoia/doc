@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.medway.doc.model.Consulta;
+import com.medway.doc.model.ConsultaTerapeutica;
 import com.medway.doc.service.ConsultaService;
 import jakarta.validation.Valid;
 
@@ -26,20 +26,20 @@ public class ConsultaController {
     private ConsultaService consultaService;
 
     @PostMapping("/registrar")
-    public ResponseEntity<Consulta> criarConsulta(@Valid @RequestBody Consulta consulta) {
+    public ResponseEntity<ConsultaTerapeutica> criarConsulta(@Valid @RequestBody ConsultaTerapeutica consulta) {
         return new ResponseEntity<>(consultaService.criarConsulta(consulta), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Consulta> buscarConsultaPorId(@PathVariable Long id) {
+    public ResponseEntity<ConsultaTerapeutica> buscarConsultaPorId(@PathVariable Long id) {
         return consultaService.buscarConsultaPorId(id)
             .map(consulta -> new ResponseEntity<>(consulta, HttpStatus.OK))
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/aluno/{re_aluno}")
-    public ResponseEntity<List<Consulta>> buscarConsultasPorAlunoRE(@PathVariable String re_aluno) {
-        List<Consulta> consultas = consultaService.buscarConsultaPorAlunoRE(re_aluno);
+    public ResponseEntity<List<ConsultaTerapeutica>> buscarConsultasPorAlunoRE(@PathVariable String re_aluno) {
+        List<ConsultaTerapeutica> consultas = consultaService.buscarConsultaPorAlunoRE(re_aluno);
         if (consultas != null && !consultas.isEmpty()) {
             return new ResponseEntity<>(consultas, HttpStatus.OK);
         }
@@ -47,8 +47,8 @@ public class ConsultaController {
     }
 
     @GetMapping("/terapeuta/{id_terapeuta}")
-    public ResponseEntity<List<Consulta>> buscarConsultasPorTerapeutaId(@PathVariable Long id_terapeuta) {
-        List<Consulta> consultas = consultaService.buscarConsultaPorTerapeutaId(id_terapeuta);
+    public ResponseEntity<List<ConsultaTerapeutica>> buscarConsultasPorTerapeutaId(@PathVariable Long id_terapeuta) {
+        List<ConsultaTerapeutica> consultas = consultaService.buscarConsultaPorTerapeutaId(id_terapeuta);
         if (consultas != null && !consultas.isEmpty()) {
             return new ResponseEntity<>(consultas, HttpStatus.OK);
         }
@@ -56,8 +56,8 @@ public class ConsultaController {
     }
 
     @GetMapping("/terapeuta/{id_terapeuta}/data")
-    public ResponseEntity<List<Consulta>> buscarConsultasDoDiaTerapeuta(@PathVariable Long id_terapeuta) {
-        List<Consulta> consultas = consultaService.buscarConsultasDoDiaTerapeuta(id_terapeuta, LocalDate.now());
+    public ResponseEntity<List<ConsultaTerapeutica>> buscarConsultasDoDiaTerapeuta(@PathVariable Long id_terapeuta) {
+        List<ConsultaTerapeutica> consultas = consultaService.buscarConsultasDoDiaTerapeuta(id_terapeuta, LocalDate.now());
         if (consultas != null && !consultas.isEmpty()) {
             return new ResponseEntity<>(consultas, HttpStatus.OK);
         }

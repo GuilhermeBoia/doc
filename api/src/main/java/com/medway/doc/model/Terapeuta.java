@@ -29,6 +29,7 @@ public class Terapeuta {
     private String ultimoNome;
 
     @Column(nullable = false)
+    @Pattern(regexp = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$")
     private String email;
 
     @Column(nullable = false)

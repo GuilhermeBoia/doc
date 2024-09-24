@@ -1,14 +1,14 @@
 package com.medway.doc.model;
 
-import com.medway.doc.model.enums.UnidadesEnum;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import java.util.List;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Pattern;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,13 +17,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "alunos")
-public class Aluno {
+@Table(name = "assessores")
+public class Assessor {
 
-    @Column(unique = true)
     @Id
-    private String registroEstudantil;
-    
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
     @Column(nullable = false)
     private String primeiroNome;
 
@@ -35,10 +35,10 @@ public class Aluno {
     private String email;
 
     @Column(nullable = false)
-    private UnidadesEnum unidadeDeEstudo;
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$")
+    private String senha;
 
-    @ManyToOne
-    @JoinColumn(name = "id_assessor", nullable = false)
-    private Assessor assessor;
+    @OneToMany(mappedBy = "assessor")
+    private List<Aluno> alunos;
 
 }

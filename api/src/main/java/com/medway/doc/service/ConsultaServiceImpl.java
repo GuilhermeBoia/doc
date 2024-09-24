@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.medway.doc.model.Aluno;
-import com.medway.doc.model.Consulta;
+import com.medway.doc.model.ConsultaTerapeutica;
 import com.medway.doc.model.Terapeuta;
 import com.medway.doc.repository.AlunoRepository;
 import com.medway.doc.repository.ConsultaRepository;
@@ -25,17 +25,17 @@ public class ConsultaServiceImpl implements ConsultaService {
     private TerapeutaRepository terapeutaRepository;
 
     @Override
-    public Consulta criarConsulta(Consulta consulta) {
+    public ConsultaTerapeutica criarConsulta(ConsultaTerapeutica consulta) {
         return consultaRepository.save(consulta);
     }
 
     @Override
-    public Optional<Consulta> buscarConsultaPorId(Long id) {
+    public Optional<ConsultaTerapeutica> buscarConsultaPorId(Long id) {
         return consultaRepository.findById(id);
     }
 
     @Override
-    public List<Consulta> buscarConsultaPorAlunoRE(String re_aluno) {
+    public List<ConsultaTerapeutica> buscarConsultaPorAlunoRE(String re_aluno) {
         Optional<Aluno> aluno = alunoRepository.findById(re_aluno);
         if (aluno.isPresent()) {
             return consultaRepository.findByAluno(aluno.get());
@@ -44,7 +44,7 @@ public class ConsultaServiceImpl implements ConsultaService {
     }
 
     @Override
-    public List<Consulta> buscarConsultaPorTerapeutaId(Long id_terapeuta) {
+    public List<ConsultaTerapeutica> buscarConsultaPorTerapeutaId(Long id_terapeuta) {
         Optional<Terapeuta> terapeuta = terapeutaRepository.findById(id_terapeuta);
         if (terapeuta.isPresent()) {
             return consultaRepository.findByTerapeuta(terapeuta.get());
@@ -53,10 +53,10 @@ public class ConsultaServiceImpl implements ConsultaService {
     }
 
     @Override
-    public List<Consulta> buscarConsultasDoDiaTerapeuta(Long id_terapeuta, LocalDate data) {
+    public List<ConsultaTerapeutica> buscarConsultasDoDiaTerapeuta(Long id_terapeuta, LocalDate data) {
         Optional<Terapeuta> terapeuta = terapeutaRepository.findById(id_terapeuta);
         if (terapeuta.isPresent() && data.equals(LocalDate.now())) {
-            return consultaRepository.findByTerapeutaAndDataDaConsulta(terapeuta.get(), data);
+            return consultaRepository.findByTerapeutaAndDataReuniao(terapeuta.get(), data);
         }
         return null;
     }
