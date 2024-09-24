@@ -37,6 +37,10 @@ public class Aluno {
     @Column(nullable = false)
     private UnidadesEnum unidadeDeEstudo;
 
+    @Column(nullable = false)
+    @Pattern(regexp = "^[1-9][A-E]$")
+    private String turma;
+
     @ManyToOne
     @JoinColumn(name = "id_assessor", nullable = false)
     private Assessor assessor;
