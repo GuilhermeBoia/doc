@@ -6,5 +6,7 @@ import com.medway.doc.model.Assessor;
 
 @Repository
 public interface AssessorRepository extends JpaRepository<Assessor, Long> {
+
+    boolean existsByEmail(String userEmail);
     
 }

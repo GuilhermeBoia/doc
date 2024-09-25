@@ -1,10 +1,11 @@
-import LoginForm from "../components/LoginForm";
+import { AuthProvider } from "../contexts/AuthContext";
+import Login from "../components/Login";
 
-export default function Login() {
+export default function LoginPage() {
   return (
-    <div>
+    <AuthProvider>
       <h1>Login</h1>
-      <LoginForm />
-    </div>
+      <Login />
+    </AuthProvider>
   );
 }
