@@ -39,6 +39,7 @@ web/node_modules
 web/.pnp
 web/.pnp.js
 web/.next
+web/lib/supabaseConfig.js
 
 # testing
 web/coverage
