@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [userType, setUserType] = useState(null);
+  const [userData, setUserData] = useState(null);
 
   const checkUserType = async (user) => {
     try {
@@ -21,9 +22,34 @@ export const AuthProvider = ({ children }) => {
       );
       const data = await response.json();
       setUserType(data.userType);
+      return data.userType;
     } catch (error) {
       console.error("Error checking user type:", error);
       setUserType(null);
+      return null;
+    }
+  };
+
+  const fetchUserData = async (user, type) => {
+    try {
+      let data, error;
+      if (type === "terapeuta") {
+        ({ data, error } = await supabase
+          .from("terapeutas")
+          .select("*")
+          .eq("email", user.email)
+          .single());
+      } else if (type === "assessor") {
+        ({ data, error } = await supabase
+          .from("assessores")
+          .select("*")
+          .eq("email", user.email)
+          .single());
+      }
+      if (error) throw error;
+      setUserData(data);
+    } catch (error) {
+      console.error("Erro ao buscar perfil do usuário:", error);
     }
   };
 
@@ -35,10 +61,14 @@ export const AuthProvider = ({ children }) => {
 
       if (session && new Date(session.expires_at * 1000) > new Date()) {
         setUser(session.user);
-        await checkUserType(session.user);
+        const type = await checkUserType(session.user);
+        if (type) {
+          await fetchUserData(session.user, type);
+        }
       } else {
         setUser(null);
         setUserType(null);
+        setUserData(null);
         await supabase.auth.signOut();
       }
       setLoading(false);
@@ -52,10 +82,14 @@ export const AuthProvider = ({ children }) => {
     } = supabase.auth.onAuthStateChange(async (_event, session) => {
       if (session && new Date(session.expires_at * 1000) > new Date()) {
         setUser(session.user);
-        await checkUserType(session.user);
+        const type = await checkUserType(session.user);
+        if (type) {
+          await fetchUserData(session.user, type);
+        }
       } else {
         setUser(null);
         setUserType(null);
+        setUserData(null);
         await supabase.auth.signOut();
       }
       setLoading(false);
@@ -70,7 +104,10 @@ export const AuthProvider = ({ children }) => {
       password,
     });
     if (!error && data.user) {
-      await checkUserType(data.user);
+      const type = await checkUserType(data.user);
+      if (type) {
+        await fetchUserData(data.user, type);
+      }
     }
     return { data, error };
   };
@@ -85,9 +122,11 @@ export const AuthProvider = ({ children }) => {
     user,
     userType,
     loading,
+    userData,
     login,
     logout,
     setUserType,
+    fetchUserData,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
