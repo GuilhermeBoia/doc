@@ -1,14 +1,13 @@
 import { useAuth } from "../contexts/AuthContext";
 import ProtectedRoute from "../components/ProtectedRoute";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
 import Link from "next/link";
 
 function DashboardContent() {
   const { userType, logout, user } = useAuth();
   const router = useRouter();
 
-  const handleLogout = useCallback(async () => {
+  const handleLogout = async () => {
     try {
       await logout();
       router.push("/");
@@ -16,7 +15,7 @@ function DashboardContent() {
       console.error("Erro durante o logout:", error);
       alert("Falha ao fazer logout. Por favor, tente novamente.");
     }
-  }, [logout, router]);
+  };
 
   return (
     <div>

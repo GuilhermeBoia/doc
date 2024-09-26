@@ -9,12 +9,10 @@ const ProtectedRoute = ({ children, allowedUserTypes }) => {
 
   //O efeito é executado sempre que [user, loading, userType ou allowedUserTypes] mudam.
   useEffect(() => {
-    if (!loading) {
-      if (!user || (allowedUserTypes && !allowedUserTypes.includes(userType))) {
-        router.replace("/login");
-      } else {
-        setIsAuthorized(true);
-      }
+    if (!user || (allowedUserTypes && !allowedUserTypes.includes(userType))) {
+      router.replace("/login");
+    } else {
+      setIsAuthorized(true);
     }
   }, [user, loading, router, userType, allowedUserTypes]);
 
